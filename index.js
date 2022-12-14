@@ -8,7 +8,7 @@ const cheerio = require("cheerio");
 
 const app = express();
 
-const URL = "https://search.rakuten.co.jp/search/mall/earphone";
+const URL = "https://www.amazon.co.jp/s?k=earphone";
 const data = [];
 
 axios(URL)
@@ -17,10 +17,11 @@ axios(URL)
     
     const $ = cheerio.load(htmlParser);
 
-    $(".searchresultitem",htmlParser).each(function(){
-        const title = $(this).find(".title").text();
-        const price = $(this).find(".important").text();
-        data.push({title,price});
+    $(".sg-col-inner",htmlParser).each(function(){
+        const star = $(this).find(".a-icon-alt").text();
+        let title = $(this).find(".a-text-normal").text();
+        title = title.substring(0,30)
+        data.push({star,title});
         console.log(data)
     })
 }).catch((error)=>{console.log(error)});
